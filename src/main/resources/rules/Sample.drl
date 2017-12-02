@@ -1,0 +1,93 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import com.sample.DroolsTest.Klient;
+import com.sample.DroolsTest.Rezerwacja;
+import com.sample.DroolsTest.Samochod;
+import com.sample.DroolsTest.Zwrot;
+
+rule "Hello World"
+    when
+        m : Message( status == Message.HELLO, myMessage : message )
+    then
+        System.out.println( myMessage );
+        m.setMessage( "Goodbye cruel world" );
+        m.setStatus( Message.GOODBYE );
+        update( m );
+end
+
+
+
+	
+
+// **************************************************
+//public Rezerwacja(Samochod samochod, Klient klient, Date dataPobrania,Date dataZwrotu) {	
+rule "Init"
+	when
+	then
+		
+		Samochod samochod1 = new Samochod("ekonomiczny",59,69,10,10);
+		Samochod samochod2 = new Samochod("ekonomiczny",59,69,10,10);
+		Samochod samochod3 = new Samochod("kompakt",69,79,10,10);
+		Samochod samochod4 = new Samochod("duzy",79,89,10,10);
+		Samochod samochod5 = new Samochod("duzy",79,89,10,10);
+		insert(samochod1);
+		//		insert(new Relacja(maria,marek,"rodzic"));
+	   // public Klient(boolean czlonekKlubu, String nazwa) {
+		Klient klient1 = new Klient(false, "Pan Adam");
+		insert(klient1);
+		Klient klient2 = new Klient(false, "Marcin");
+		Klient klient3 = new Klient(false, "Pan Kotek");
+		Rezerwacja r   = new Rezerwacja(samochod1,klient1,10,20);
+		insert(r);
+		System.out.println(r.zrealizowana );
+end	
+
+
+//public Samochod(String typ, int cena13, int cena4, boolean bagaznik, boolean fotelikDlaDziecka) {
+//	public Rezerwacja(Samochod samochod, Klient klient, Date dataPobrania,Date dataZwrotu) {
+
+rule "obliczCeneZaDzien"
+	when
+		r : Rezerwacja(Rezerwacja.zrealizowana == false)	
+	then
+	System.out.println("choj" );
+ 		if((r.dataPobrania - r.dataZwrotu) > 3){
+ 			r.cenaZaDzien = r.samochod.cena4;
+ 			r.zrealizowana = true;
+ 		} else{
+ 			r.cenaZaDzien = r.samochod.cena13;
+ 			r.zrealizowana = true;
+ 		}
+	
+		System.out.println("Obliczono cene dla samochodu " );
+end
+		
+/*
+rule "obliczCeneCalkowita" // klient juz oddal samochod
+	when
+		r : Rezerwacja(r.zrealizowana == true )	
+	then
+	 	
+ 		r.cenaCalkowita = r.cenaZaDzien * (dataPobrania - dataZwrotu) +  r.samochod.bagaznik + r.samochod.fotelikDlaDziecka;
+		
+		if( r.samochod.iloscKolpakow < 4 ){
+			r.cenaCalkowita += (4 - r.samochod.iloscKolpakow) * 20; 
+		}
+	
+		if ( ! r.samochod.dowodRejestracyjny ) {
+			r.cenaCalkowita += 500;
+		}
+	
+		if ( dataZwrotu > zadeklarowanaDataZwrotu ){
+			r.cenaCalkowita += r.cenaZaDzien * 3 * ( dataZwrotu - zadeklarowanaDataZwrotu );
+		}
+	
+		System.out.println("Obliczono cene dla samochodu " );
+end
+		*/
+
+
+
+
+

@@ -39,8 +39,8 @@ rule "Init"
 		Klient klient2 = new Klient(false, "Marcin");
 		Klient klient3 = new Klient(false, "Pan Kotek");
 		Rezerwacja r   = new Rezerwacja(samochod1,klient1,10,20);
-		insert(r);
-		System.out.println(r.zrealizowana );
+		insertLogical(r);
+
 end	
 
 
@@ -49,27 +49,27 @@ end
 
 rule "obliczCeneZaDzien"
 	when
-		r : Rezerwacja(Rezerwacja.zrealizowana == false)	
+		q : Rezerwacja(Rezerwacja.zrealizowana == false)	
 	then
-	System.out.println("choj" );
- 		if((r.dataPobrania - r.dataZwrotu) > 3){
- 			r.cenaZaDzien = r.samochod.cena4;
- 			r.zrealizowana = true;
+ 		if((q.dataPobrania - q.dataZwrotu) > 3){
+ 			q.cenaZaDzien = q.samochod.cena4;
  		} else{
- 			r.cenaZaDzien = r.samochod.cena13;
- 			r.zrealizowana = true;
+ 			q.cenaZaDzien = q.samochod.cena13;
  		}
-	
-		System.out.println("Obliczono cene dla samochodu " );
+ 		q.zrealizowana = true;
+		update(q);
+		insert(q);
+		System.out.println(q.zrealizowana);
 end
 		
-/*
+
 rule "obliczCeneCalkowita" // klient juz oddal samochod
 	when
-		r : Rezerwacja(r.zrealizowana == true )	
+		r : Rezerwacja(Rezerwacja.zrealizowana)	
 	then
 	 	
- 		r.cenaCalkowita = r.cenaZaDzien * (dataPobrania - dataZwrotu) +  r.samochod.bagaznik + r.samochod.fotelikDlaDziecka;
+	 	
+ 		r.cenaCalkowita = r.cenaZaDzien * (r.dataPobrania - r.dataZwrotu) +  r.samochod.bagaznik + r.samochod.fotelikDlaDziecka;
 		
 		if( r.samochod.iloscKolpakow < 4 ){
 			r.cenaCalkowita += (4 - r.samochod.iloscKolpakow) * 20; 
@@ -79,13 +79,12 @@ rule "obliczCeneCalkowita" // klient juz oddal samochod
 			r.cenaCalkowita += 500;
 		}
 	
-		if ( dataZwrotu > zadeklarowanaDataZwrotu ){
-			r.cenaCalkowita += r.cenaZaDzien * 3 * ( dataZwrotu - zadeklarowanaDataZwrotu );
+		if ( r.dataZwrotu > r.zadeklarowanaDataZwrotu ){
+			r.cenaCalkowita += r.cenaZaDzien * 3 * ( r.dataZwrotu - r.zadeklarowanaDataZwrotu );
 		}
-	
-		System.out.println("Obliczono cene dla samochodu " );
-end
-		*/
+		System.out.println(r.cenaCalkowita );
+		end
+		
 
 
 

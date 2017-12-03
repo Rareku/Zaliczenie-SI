@@ -1,10 +1,13 @@
 package com.sample;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 /**
  * This is a sample class to launch a rule.
@@ -29,6 +32,9 @@ public class DroolsTest {
     public static class Klient{
         public boolean czlonekKlubu; 
         public String nazwa;
+        public boolean wynajety;
+        public String wyporzycz;
+        public boolean maSamochod;
 		public Klient(boolean czlonekKlubu, String nazwa) {
 			super();
 			this.czlonekKlubu = czlonekKlubu;
@@ -36,7 +42,6 @@ public class DroolsTest {
 		}
         
     }
-
     public static class Samochod{
     	public boolean dowodRejestracyjny;
     	public int iloscKolpakow;
@@ -45,6 +50,7 @@ public class DroolsTest {
         public int fotelikDlaDziecka;
         public int cena13;
         public int cena4;
+        public boolean wolny;
         
 		
         public Samochod(String typ, int cena13, int cena4, int bagaznik, int fotelikDlaDziecka) {
@@ -53,7 +59,9 @@ public class DroolsTest {
 			this.fotelikDlaDziecka = fotelikDlaDziecka;
 			this.cena13 = cena13;
 			this.cena4 =  cena4;
+			this.wolny = true;
         }
+        
         
               
     }

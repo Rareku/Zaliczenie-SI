@@ -42,6 +42,38 @@ rule "Init"
 		insertLogical(r);
 
 end	
+rule "wyporzyczEkonomiczny"
+	when
+//klient chce wyporzyczyc
+	k : Klient(Klient.wyporzycz == "Ekonomiczny" , Klient.wynajety == false)
+	then
+	//klient wyporzycza ekonomiczny jak nie ma ekonoma to dostaje kompakt z cene ekonoma
+end
+
+rule "wyporzyczKompakt"
+	when
+//klient chce wyporzyczyc kompakt
+	k : Klient(Klient.wyporzycz == "Kompakt" ,Klient.wynajety == false)
+	then
+	//Klient wyporzycza kompakt jak nie ma kompakta dostaje duzy
+end
+
+rule "wyporzyczDuzy"
+when
+	k : Klient(Klient.wyporzycz == "Duzy" , Klient.wynajety == false)
+	then
+	//klient dostaje duzy 
+	k.maSamochod = true;
+	update(k);
+end
+
+
+rule "Rezerwacja"
+when
+	Klient(Klient.maSamochod == true)
+then
+//zarezerwoj samochod
+end
 
 
 //public Samochod(String typ, int cena13, int cena4, boolean bagaznik, boolean fotelikDlaDziecka) {
